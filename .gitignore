@@ -1,5 +1,15 @@
-.gradle/
+# Gradle build output
 build/
+.gradle/
+
+# IntelliJ - machine-specific files that differ per developer
+.idea/workspace.xml
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/modules.xml
+.idea/modules/
+.idea/.gitignore
 *.iml
-.idea/*
-!.idea/runConfigurations/
+
+# Claude Code internal file
+CLAUDE.md
