@@ -12,6 +12,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class ToaInvocationDisplayOverlay extends OverlayPanel
 {
+    private static final Color SEPARATOR_COLOR = new Color(80, 80, 80);
+
     private final ToaInvocationDisplayPlugin plugin;
     private final ToaInvocationDisplayConfig config;
 
@@ -28,8 +30,7 @@ public class ToaInvocationDisplayOverlay extends OverlayPanel
     {
         ToaRoom currentRoom = plugin.getCurrentRoom();
 
-        // Only render inside ToA (not outside the raid or in the end tomb)
-        if (currentRoom == ToaRoom.NONE || currentRoom == ToaRoom.TOMB)
+        if (currentRoom == ToaRoom.NONE || currentRoom == ToaRoom.TOMB || currentRoom == ToaRoom.GLOBAL)
         {
             return null;
         }
@@ -50,7 +51,8 @@ public class ToaInvocationDisplayOverlay extends OverlayPanel
             return super.render(graphics);
         }
 
-        boolean anyRendered = false;
+        // --- Room-specific invocations ---
+        boolean anyRoomRendered = false;
         for (Invocation inv : Invocation.values())
         {
             if (inv.getRoom() != currentRoom)
@@ -59,32 +61,16 @@ public class ToaInvocationDisplayOverlay extends OverlayPanel
             }
 
             Boolean active = invocations.get(inv);
-            if (active == null)
+            if (active == null || (config.showOnlyActive() && !active))
             {
                 continue;
             }
 
-            if (config.showOnlyActive() && !active)
-            {
-                continue;
-            }
-
-            Color color = active ? config.activeColor() : config.inactiveColor();
-            String label = inv.getDisplayName();
-            String right = config.showRaidLevel() ? "+" + inv.getRaidLevelBonus() : "";
-
-            panelComponent.getChildren().add(LineComponent.builder()
-                .left(label)
-                .leftColor(color)
-                .right(right)
-                .rightColor(color)
-                .build());
-
-            anyRendered = true;
+            panelComponent.getChildren().add(lineFor(inv, active));
+            anyRoomRendered = true;
         }
 
-        // If showOnlyActive and nothing is on, say so
-        if (!anyRendered && config.showOnlyActive())
+        if (!anyRoomRendered && config.showOnlyActive())
         {
             panelComponent.getChildren().add(LineComponent.builder()
                 .left("No active invocations")
@@ -92,6 +78,47 @@ public class ToaInvocationDisplayOverlay extends OverlayPanel
                 .build());
         }
 
+        // --- Global invocations (attempts, time, path, prayer) ---
+        {
+            boolean anyGlobalRendered = false;
+            for (Invocation inv : Invocation.values())
+            {
+                if (inv.getRoom() != ToaRoom.GLOBAL)
+                {
+                    continue;
+                }
+
+                Boolean active = invocations.get(inv);
+                if (active == null || (config.showOnlyActive() && !active))
+                {
+                    continue;
+                }
+
+                if (!anyGlobalRendered)
+                {
+                    panelComponent.getChildren().add(LineComponent.builder()
+                        .left("─────────────────")
+                        .leftColor(SEPARATOR_COLOR)
+                        .build());
+                }
+
+                panelComponent.getChildren().add(lineFor(inv, active));
+                anyGlobalRendered = true;
+            }
+        }
+
         return super.render(graphics);
+    }
+
+    private LineComponent lineFor(Invocation inv, boolean active)
+    {
+        Color color = active ? config.activeColor() : config.inactiveColor();
+        String right = config.showRaidLevel() ? "+" + inv.getRaidLevelBonus() : "";
+        return LineComponent.builder()
+            .left(inv.getDisplayName())
+            .leftColor(color)
+            .right(right)
+            .rightColor(color)
+            .build();
     }
 }

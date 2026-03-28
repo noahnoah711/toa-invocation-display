@@ -10,6 +10,3 @@ build/
 .idea/modules/
 .idea/.gitignore
 *.iml
-
-# Claude Code internal file
-CLAUDE.md

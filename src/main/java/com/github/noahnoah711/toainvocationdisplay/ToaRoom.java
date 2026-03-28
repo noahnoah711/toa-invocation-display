@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum ToaRoom
 {
     NONE("None", new int[]{}),
+    GLOBAL("Global", new int[]{}),             // Shown in all boss rooms (attempts, time, prayer)
     NEXUS("Nexus", new int[]{14160}),
     KEPHRI("Kephri", new int[]{14162, 14164}),   // Scabaras puzzle + Kephri boss
     AKKHA("Akkha", new int[]{14674, 14676}),       // Het puzzle + Akkha boss
