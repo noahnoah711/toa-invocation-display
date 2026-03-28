@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id 'java'
+    id 'checkstyle'
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url = 'https://repo.runelite.net'
+    }
+    mavenCentral()
+}
+
+configurations {
+    clientRuntime
+}
+
+dependencies {
+    compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    testImplementation 'junit:junit:4.12'
+    testImplementation group: 'net.runelite', name: 'client', version: runeLiteVersion
+    testImplementation group: 'net.runelite', name: 'jshell', version: runeLiteVersion
+    clientRuntime group: 'net.runelite', name: 'client', version: runeLiteVersion
+}
+
+task runClient(type: JavaExec) {
+    classpath = configurations.clientRuntime + sourceSets.main.output
+    mainClass = 'net.runelite.client.RuneLite'
+    args '--developer-mode'
+    jvmArgs '-ea'
+    enableAssertions = true
+}
+
+group = 'com.github.noahnoah711'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    from 'LICENSE'
+}
