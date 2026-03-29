@@ -12,8 +12,6 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class ToaInvocationDisplayOverlay extends OverlayPanel
 {
-    private static final Color SEPARATOR_COLOR = new Color(80, 80, 80);
-
     private final ToaInvocationDisplayPlugin plugin;
     private final ToaInvocationDisplayConfig config;
 
@@ -96,10 +94,7 @@ public class ToaInvocationDisplayOverlay extends OverlayPanel
 
                 if (!anyGlobalRendered)
                 {
-                    panelComponent.getChildren().add(LineComponent.builder()
-                        .left("─────────────────")
-                        .leftColor(SEPARATOR_COLOR)
-                        .build());
+                    panelComponent.getChildren().add(new SeparatorComponent());
                 }
 
                 panelComponent.getChildren().add(lineFor(inv, active));

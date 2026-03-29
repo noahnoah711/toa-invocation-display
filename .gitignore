@@ -10,3 +10,7 @@ build/
 .idea/modules/
 .idea/.gitignore
 *.iml
+
+# Local development helpers
+switch_to_local.sh
+switch_to_hub.sh
