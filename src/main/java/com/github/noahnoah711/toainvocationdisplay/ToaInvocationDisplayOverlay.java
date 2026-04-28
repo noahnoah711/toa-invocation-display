@@ -26,6 +26,11 @@ public class ToaInvocationDisplayOverlay extends OverlayPanel
     @Override
     public Dimension render(Graphics2D graphics)
     {
+        if (config.displayMode() != ToaInvocationDisplayConfig.DisplayMode.OVERLAY)
+        {
+            return null;
+        }
+
         ToaRoom currentRoom = plugin.getCurrentRoom();
 
         if (currentRoom == ToaRoom.NONE || currentRoom == ToaRoom.TOMB || currentRoom == ToaRoom.GLOBAL)

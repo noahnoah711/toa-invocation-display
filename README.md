@@ -28,10 +28,13 @@ All rooms also show the following below the divider (if active): Try Again, Pers
 
 Works whether you created the raid or joined someone else's.
 
+If you have limited screen space, you can switch the display from an overlay to a docked side panel via the Display mode option below.
+
 ## Configuration
 
 | Option | Default | Description |
 |--------|---------|-------------|
+| Display mode | Overlay | Choose between Overlay (drawn on top of the game) or Side panel (docked into RuneLite's right toolbar). |
 | Show only active invocations | On | Only list invocations that are turned on. Turn off to see all room invocations with active ones highlighted. |
 | Show raid level bonus | Off | Appends the raid level contribution (e.g. +10) next to each invocation. |
 | Active invocation color | Green | Color used for active invocations. |
